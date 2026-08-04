@@ -11,3 +11,4 @@ def read_root():
     return {
         "message": "Welcome to the Jewelry Order and Inventory Management System"
     }
+
