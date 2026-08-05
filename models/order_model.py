@@ -22,6 +22,9 @@ class Order(Base):
     # Creating relationship with Customer model
     customer = relationship("Customer",back_populates="orders")
 
+    # Defining relationship between Order and OrderItem
+    items = relationship("OrderItem",back_populates="order")
+
 
     def __str__(self):
         return f"Order(id={self.id}, status={self.status})"

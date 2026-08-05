@@ -1,4 +1,5 @@
 from sqlalchemy import Column, String, Numeric, Integer
+from sqlalchemy.orm import relationship
 from models.base_model import Base
 from utils.uuid_generate import generate_uuid
 
@@ -16,6 +17,8 @@ class Jewelry(Base):
     price = Column(Numeric(10, 2), nullable=False)
     stock_quantity = Column(Integer, nullable=False)
 
+    # Defining relationship between Jewelry and OrderItem
+    order_items = relationship("OrderItem",back_populates="jewelry")
 
     def __str__(self):
         return (
