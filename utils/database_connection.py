@@ -18,3 +18,14 @@ SessionFactory = sessionmaker(bind=engine)
 
 # Create a database session
 db_session = SessionFactory()
+
+# Import models so SQLAlchemy knows the tables
+from models.base_model import Base
+from models import customer_model
+from models import jewelry_model
+from models import order_model
+from models import order_item_model
+
+
+# Create tables in the database
+Base.metadata.create_all(bind=engine)
