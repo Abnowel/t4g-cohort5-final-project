@@ -1,4 +1,6 @@
 from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
+
 from models.base_model import Base
 from utils.uuid_generate import generate_uuid
 
@@ -14,6 +16,9 @@ class Customer(Base):
     phone_number = Column(String(10), nullable=False)
     email = Column(String(100), nullable=False)
     address = Column(String(150), nullable=False)
+
+    # Creating relationship with Order model
+    orders = relationship("Order",back_populates="customer")
 
 
     def __str__(self):
