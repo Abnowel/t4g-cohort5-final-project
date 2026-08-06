@@ -18,3 +18,7 @@ class CustomerService:
         self.session.commit()
 
         return customer
+
+    def get_all_customers(self):
+         customers = self.session.query(Customer).all()
+         return customers
