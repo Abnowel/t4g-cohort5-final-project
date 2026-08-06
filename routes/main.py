@@ -7,7 +7,7 @@ app = FastAPI()
 
 # Our first API endpoint
 @app.get("/")
-def read_root():
+def home():
     return {
         "message": "Welcome to the Jewelry Order and Inventory Management System"
     }
