@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, status
+from fastapi import APIRouter, Body, status, HTTPException
 from services.customer_service import CustomerService
 
 router = APIRouter(prefix="/customers")
@@ -22,3 +22,14 @@ def get_customers():
 
     return result
 
+@router.get("/{customer_id}")
+def get_customer(customer_id: str):
+    customer = customer_service.get_customer_by_id(customer_id)
+
+    if customer is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Customer not found"
+        )
+
+    return customer.to_dict()

@@ -1,6 +1,7 @@
 from models.customer_model import Customer
 from utils.database_connection import db_session
 
+
 class CustomerService:
     """Handles all customer-related database operations."""
     def __init__(self, session=db_session):
@@ -22,3 +23,6 @@ class CustomerService:
     def get_all_customers(self):
          customers = self.session.query(Customer).all()
          return customers
+
+    def get_customer_by_id(self, customer_id):
+        return self.session.query(Customer).filter(Customer.id == customer_id).first()
