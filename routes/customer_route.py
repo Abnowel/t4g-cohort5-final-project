@@ -33,3 +33,29 @@ def get_customer(customer_id: str):
         )
 
     return customer.to_dict()
+
+@router.put("/{customer_id}")
+def update_customer(customer_id: str, body: dict = Body(...)):
+    updated_customer = customer_service.update_customer(customer_id,body)
+
+    if updated_customer is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Customer not found"
+        )
+
+    return updated_customer.to_dict()
+
+@router.delete("/{customer_id}")
+def delete_customer(customer_id: str):
+    deleted_customer = customer_service.delete_customer(customer_id)
+
+    if deleted_customer is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Customer not found"
+        )
+
+    return {
+        "message": "Customer deleted successfully"
+    }
