@@ -32,4 +32,26 @@ class JewelryService:
         jewelry = self.session.query(Jewelry).filter(Jewelry.id == jewelry_id).first()
 
         return jewelry
+
+    # Update a jewelry item
+    def update_jewelry(self, jewelry_id, jewelry_data):
+        jewelry = self.session.query(Jewelry).filter(
+        Jewelry.id == jewelry_id
+    ).first()
+
+        if jewelry is None:
+            return None
+
+        jewelry.name = jewelry_data.get("name", jewelry.name)
+        jewelry.category = jewelry_data.get("category", jewelry.category)
+        jewelry.material = jewelry_data.get("material", jewelry.material)
+        jewelry.price = jewelry_data.get("price", jewelry.price)
+        jewelry.stock_quantity = jewelry_data.get(
+        "stock_quantity",
+        jewelry.stock_quantity
+    )
+
+        self.session.commit()
+
+        return jewelry
     

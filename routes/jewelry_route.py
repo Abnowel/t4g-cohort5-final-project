@@ -38,3 +38,19 @@ def get_jewelry_by_id(jewelry_id: str):
         )
 
     return jewelry.to_dict()
+
+# Update a jewelry item
+@router.put("/{jewelry_id}",status_code=status.HTTP_200_OK)
+def update_jewelry(jewelry_id: str, body: dict = Body(...)):
+    updated_jewelry = jewelry_service.update_jewelry(
+        jewelry_id,
+        body
+    )
+
+    if updated_jewelry is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Jewelry item not found"
+        )
+
+    return updated_jewelry.to_dict()
