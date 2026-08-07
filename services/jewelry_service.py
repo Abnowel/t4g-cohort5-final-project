@@ -54,4 +54,17 @@ class JewelryService:
         self.session.commit()
 
         return jewelry
-    
+
+    # Delete a jewelry item
+    def delete_jewelry(self, jewelry_id):
+        jewelry = self.session.query(Jewelry).filter(
+        Jewelry.id == jewelry_id
+    ).first()
+
+        if jewelry is None:
+            return None
+
+        self.session.delete(jewelry)
+        self.session.commit()
+
+        return jewelry

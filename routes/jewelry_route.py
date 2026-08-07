@@ -54,3 +54,18 @@ def update_jewelry(jewelry_id: str, body: dict = Body(...)):
         )
 
     return updated_jewelry.to_dict()
+
+# Delete a jewelry item
+@router.delete("/{jewelry_id}",status_code=status.HTTP_200_OK)
+def delete_jewelry(jewelry_id: str):
+    deleted_jewelry = jewelry_service.delete_jewelry(jewelry_id)
+
+    if deleted_jewelry is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Jewelry item not found"
+        )
+
+    return {
+        "message": "Jewelry item deleted successfully"
+    }
