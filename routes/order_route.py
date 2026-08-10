@@ -57,3 +57,19 @@ def update_order(order_id: str, body: dict = Body(...)):
         )
 
     return updated_order.to_dict()
+
+# Delete an existing order
+@router.delete("/{order_id}")
+def delete_order(order_id: str):
+
+    deleted_order = order_service.delete_order(order_id)
+
+    if deleted_order is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Order not found"
+        )
+
+    return {
+        "message": "Order deleted successfully"
+    }

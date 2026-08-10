@@ -61,4 +61,18 @@ class OrderService:
 
         self.session.commit()
 
-        return order    
+        return order 
+
+    # Delete an existing order
+    def delete_order(self, order_id):
+        order = self.session.query(Order).filter(
+        Order.id == order_id
+        ).first()
+
+        if order is None:
+            return None
+
+        self.session.delete(order)
+        self.session.commit()
+
+        return order   
