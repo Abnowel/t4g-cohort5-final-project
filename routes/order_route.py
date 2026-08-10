@@ -1,0 +1,42 @@
+from fastapi import APIRouter, Body, status , HTTPException
+from services.order_service import OrderService
+
+
+# Creating order router with a common prefix
+router = APIRouter(prefix="/orders")
+
+# Creating an instance of OrderService
+order_service = OrderService()
+
+# Creating a new order
+@router.post("/", status_code=status.HTTP_201_CREATED)
+def create_order(body: dict = Body(...)):
+    new_order = order_service.create_order(body)
+
+    return new_order.to_dict()
+
+# Get all orders
+@router.get("/")
+def get_orders():
+    orders = order_service.get_all_orders()
+
+    result = []
+
+    for order in orders:
+        result.append(order.to_dict())
+
+    return result
+
+# Get one order by ID
+@router.get("/{order_id}")
+def get_order_by_id(order_id: str):
+
+    order = order_service.get_order_by_id(order_id)
+
+    if order is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Order not found"
+        )
+
+    return order.to_dict()

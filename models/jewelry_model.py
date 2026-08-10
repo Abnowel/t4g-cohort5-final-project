@@ -32,6 +32,6 @@ class Jewelry(Base):
             "name": self.name,
             "category": self.category,
             "material": self.material,
-            "price": f"GH₵{self.price}",
+            "price": f"GHS {self.price}",
             "stock_quantity": self.stock_quantity
         }

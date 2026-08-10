@@ -36,5 +36,5 @@ class Order(Base):
             "customer_id": self.customer_id,
             "order_date": self.order_date,
             "status": self.status,
-            "total_amount": self.total_amount
+            "total_amount":f"GHS {self.total_amount}"
         }

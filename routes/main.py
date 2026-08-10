@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from routes.customer_route import router as customer_router
 from routes.jewelry_route import router as jewelry_router
+from routes.order_route import router as order_router
 
 # Create our FastAPI application
 app = FastAPI()
@@ -8,6 +9,7 @@ app = FastAPI()
 # Register customer routes with the main application
 app.include_router(customer_router)
 app.include_router(jewelry_router)
+app.include_router(order_router)
 
 
 # Our first API endpoint
