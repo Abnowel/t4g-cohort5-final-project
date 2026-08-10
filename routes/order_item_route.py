@@ -50,3 +50,23 @@ def get_order_item_by_id(order_item_id: str):
         )
 
     return order_item.to_dict()
+
+# Update an existing order item
+@router.put("/{order_item_id}")
+def update_order_item(
+    order_item_id: str,
+    body: dict = Body(...)
+):
+
+    updated_order_item = order_item_service.update_order_item(
+        order_item_id,
+        body
+    )
+
+    if updated_order_item is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Order item or jewelry item not found"
+        )
+
+    return updated_order_item.to_dict()

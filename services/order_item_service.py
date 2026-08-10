@@ -46,4 +46,36 @@ class OrderItemService:
 
         return order_item
 
+    # Update an existing order item
+    def update_order_item(self, order_item_id, order_item_data):
+
+        order_item = self.session.query(OrderItem).filter(
+            OrderItem.id == order_item_id
+        ).first()
+
+        if order_item is None:
+            return None
+
+        if order_item_data.get("order_id") is not None:
+            order_item.order_id = order_item_data.get("order_id")
+
+        if order_item_data.get("jewelry_id") is not None:
+
+            jewelry = self.session.query(Jewelry).filter(
+                Jewelry.id == order_item_data.get("jewelry_id")
+            ).first()
+
+            if jewelry is None:
+                return None
+
+            order_item.jewelry_id = order_item_data.get("jewelry_id")
+            order_item.price = jewelry.price
+
+        if order_item_data.get("quantity") is not None:
+            order_item.quantity = order_item_data.get("quantity")
+
+        self.session.commit()
+
+        return order_item
+
     
