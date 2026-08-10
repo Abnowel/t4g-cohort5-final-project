@@ -78,4 +78,19 @@ class OrderItemService:
 
         return order_item
 
+    # Delete an existing order item
+    def delete_order_item(self, order_item_id):
+
+        order_item = self.session.query(OrderItem).filter(
+            OrderItem.id == order_item_id
+        ).first()
+
+        if order_item is None:
+            return None
+
+        self.session.delete(order_item)
+        self.session.commit()
+
+        return order_item
+
     
