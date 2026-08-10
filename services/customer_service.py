@@ -14,7 +14,7 @@ class CustomerService:
     phone_number=customer_data.get("phone_number"),
     email=customer_data.get("email"),
     address=customer_data.get("address")
-)
+    )
         self.session.add(customer)
         self.session.commit()
 

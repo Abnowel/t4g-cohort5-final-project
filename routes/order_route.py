@@ -40,3 +40,20 @@ def get_order_by_id(order_id: str):
         )
 
     return order.to_dict()
+
+# Update an existing order
+@router.put("/{order_id}")
+def update_order(order_id: str, body: dict = Body(...)):
+
+    updated_order = order_service.update_order(
+        order_id,
+        body
+    )
+
+    if updated_order is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Order not found"
+        )
+
+    return updated_order.to_dict()

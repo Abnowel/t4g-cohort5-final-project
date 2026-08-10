@@ -14,7 +14,7 @@ class JewelryService:
         material=jewelry_data.get("material"),
         price=jewelry_data.get("price"),
         stock_quantity=jewelry_data.get("stock_quantity")
-    )
+        )
 
         self.session.add(new_jewelry)
         self.session.commit()
@@ -37,7 +37,7 @@ class JewelryService:
     def update_jewelry(self, jewelry_id, jewelry_data):
         jewelry = self.session.query(Jewelry).filter(
         Jewelry.id == jewelry_id
-    ).first()
+        ).first()
 
         if jewelry is None:
             return None
@@ -49,7 +49,7 @@ class JewelryService:
         jewelry.stock_quantity = jewelry_data.get(
         "stock_quantity",
         jewelry.stock_quantity
-    )
+        )
 
         self.session.commit()
 
@@ -59,7 +59,7 @@ class JewelryService:
     def delete_jewelry(self, jewelry_id):
         jewelry = self.session.query(Jewelry).filter(
         Jewelry.id == jewelry_id
-    ).first()
+        ).first()
 
         if jewelry is None:
             return None

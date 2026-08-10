@@ -37,4 +37,6 @@ class Order(Base):
             "order_date": self.order_date,
             "status": self.status,
             "total_amount":f"GHS {self.total_amount}"
-        }
+            }
+
+    

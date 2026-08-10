@@ -14,7 +14,7 @@ class OrderService:
         customer_id=order_data.get("customer_id"),
         status=order_data.get("status"),
         total_amount=order_data.get("total_amount")
-    )
+        )
 
         self.session.add(new_order)
         self.session.commit()
@@ -31,7 +31,34 @@ class OrderService:
     def get_order_by_id(self, order_id):
         order = self.session.query(Order).filter(
         Order.id == order_id
-    ).first()
+        ).first()
 
         return order
+
+    # Update an existing order
+    def update_order(self, order_id, order_data):
+
+        order = self.session.query(Order).filter(
+        Order.id == order_id
+        ).first()
+
+        if order is None:
+            return None
+
+        order.customer_id = order_data.get(
+        "customer_id",
+        order.customer_id
+        )
+        order.status = order_data.get(
+        "status",
+        order.status
+        )
+        order.total_amount = order_data.get(
+        "total_amount",
+        order.total_amount
+        )
         
+
+        self.session.commit()
+
+        return order    

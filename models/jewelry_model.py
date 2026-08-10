@@ -23,7 +23,7 @@ class Jewelry(Base):
     def __str__(self):
         return (
             f"Jewelry(id={self.id}, name={self.name}, price=GHC{self.price})"
-        )
+            )
 
 
     def to_dict(self):
@@ -34,4 +34,4 @@ class Jewelry(Base):
             "material": self.material,
             "price": f"GHS {self.price}",
             "stock_quantity": self.stock_quantity
-        }
+            }

@@ -24,7 +24,7 @@ class Customer(Base):
     def __str__(self):
         return(
             f"Customer(id={self.id}, Name ={self.first_name} {self.last_name})"
-        )
+            )
 
     def to_dict(self):
         return{
@@ -34,4 +34,4 @@ class Customer(Base):
             "phone_number": self.phone_number,
             "email": self.email,
             "address": self.address,
-        }
+            }
