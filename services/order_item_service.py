@@ -31,6 +31,19 @@ class OrderItemService:
         return new_order_item
 
 
-    
+    # Get all order items
+    def get_all_order_items(self):
+        order_items = self.session.query(OrderItem).all()
+
+        return order_items
+
+    # Get one order item by ID
+    def get_order_item_by_id(self, order_item_id):
+
+        order_item = self.session.query(OrderItem).filter(
+            OrderItem.id == order_item_id
+        ).first()
+
+        return order_item
 
     
