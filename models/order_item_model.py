@@ -34,5 +34,5 @@ class OrderItem(Base):
             "order_id": self.order_id,
             "jewelry_id": self.jewelry_id,
             "quantity": self.quantity,
-            "price": self.price
+            "price": f"GHS {self.price}"
         }
