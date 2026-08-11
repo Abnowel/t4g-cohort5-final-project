@@ -1,5 +1,6 @@
 from models.order_item_model import OrderItem
 from models.jewelry_model import Jewelry
+from models.order_model import Order
 from utils.database_connection import db_session
 
 
@@ -28,6 +29,8 @@ class OrderItemService:
         self.session.add(new_order_item)
         self.session.commit()
 
+        self.recalculate_order_total(new_order_item.order_id)
+
         return new_order_item
 
 
@@ -46,6 +49,8 @@ class OrderItemService:
 
         return order_item
 
+
+
     # Update an existing order item
     def update_order_item(self, order_item_id, order_item_data):
 
@@ -55,9 +60,6 @@ class OrderItemService:
 
         if order_item is None:
             return None
-
-        if order_item_data.get("order_id") is not None:
-            order_item.order_id = order_item_data.get("order_id")
 
         if order_item_data.get("jewelry_id") is not None:
 
@@ -76,6 +78,9 @@ class OrderItemService:
 
         self.session.commit()
 
+        # Recalculate the order total
+        self.recalculate_order_total(order_item.order_id)
+
         return order_item
 
     # Delete an existing order item
@@ -88,9 +93,34 @@ class OrderItemService:
         if order_item is None:
             return None
 
+        order_id = order_item.order_id
+
         self.session.delete(order_item)
         self.session.commit()
 
+        # Recalculate the order total
+        self.recalculate_order_total(order_id)
+
         return order_item
+
+    # Recalculate the total amount of an order
+    def recalculate_order_total(self, order_id):
+
+        order_items = self.session.query(OrderItem).filter(
+        OrderItem.order_id == order_id
+        ).all()
+
+        total = sum(
+            order_item.price * order_item.quantity
+            for order_item in order_items
+        )
+
+        order = self.session.query(Order).filter(
+            Order.id == order_id
+        ).first()
+
+        if order is not None:
+            order.total_amount = total
+            self.session.commit()
 
     
