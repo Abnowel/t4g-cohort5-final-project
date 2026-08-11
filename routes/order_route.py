@@ -12,9 +12,15 @@ order_service = OrderService()
 # Creating a new order
 @router.post("/", status_code=status.HTTP_201_CREATED)
 def create_order(body: OrderCreate):
-    
+
     new_order = order_service.create_order(
         body.model_dump()
+        )
+
+    if new_order == "customer_not_found":
+        raise HTTPException(
+            status_code=404,
+            detail="Customer not found"
         )
 
     if new_order is None:

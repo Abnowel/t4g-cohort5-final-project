@@ -1,6 +1,7 @@
 from models.order_model import Order
 from models.order_item_model import OrderItem
 from models.jewelry_model import Jewelry
+from models.customer_model import Customer
 from utils.database_connection import db_session
 
 
@@ -11,6 +12,12 @@ class OrderService:
 
     # Creating a new order
     def create_order(self, order_data):
+        customer = self.session.query(Customer).filter(
+        Customer.id == order_data.get("customer_id")
+    ).first()
+
+        if customer is None:
+            return "customer_not_found"
         items = order_data.get("items",[])
 
         # Checking that all jewelry items exist before creating the order
