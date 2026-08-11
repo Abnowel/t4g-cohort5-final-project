@@ -11,11 +11,27 @@ class OrderService:
 
     # Creating a new order
     def create_order(self, order_data):
+        items = order_data.get("items",[])
+
+        # Checking that all jewelry items exist before creating the order
+        jewelry_items = []
+
+        for item in items:
+            jewelry = self.session.query(Jewelry).filter(
+                Jewelry.id == item.get("jewelry_id")
+            ).first()
+
+            if jewelry is None:
+                return None
+
+            jewelry_items.append(
+                (item,jewelry)
+            )
 
         new_order = Order(
-        customer_id=order_data.get("customer_id"),
-        status=order_data.get("status"),
-        total_amount=0
+            customer_id=order_data.get("customer_id"),
+            status=order_data.get("status"),
+            total_amount=0
         )
 
         self.session.add(new_order)
@@ -24,18 +40,11 @@ class OrderService:
         total = 0
 
         # Creating order items for the new order
-        for item in order_data.get("items", []):
-
-            jewelry = self.session.query(Jewelry).filter(
-                Jewelry.id == item.get("jewelry_id")
-            ).first()
-
-            if jewelry is None:
-                return None
+        for item ,jewelry in jewelry_items:
 
             order_item = OrderItem(
                 order_id = new_order.id,
-                jewelry_id = item.get("jewelry_id"),
+                jewelry_id = jewelry.id,
                 quantity = item.get("quantity"),
                 price = jewelry.price
             )

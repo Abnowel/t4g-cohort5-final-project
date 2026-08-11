@@ -13,6 +13,12 @@ order_service = OrderService()
 def create_order(body: dict = Body(...)):
     new_order = order_service.create_order(body)
 
+    if new_order is None:
+        raise HTTPException(
+            status_code=404,
+            detail = "Jewelry item not found"
+        )
+
     return new_order.to_dict()
 
 # Get all orders
