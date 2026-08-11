@@ -2,11 +2,11 @@ from pydantic import BaseModel, Field
 
 
 class OrderItemCreate(BaseModel):
-    jewelry_id: str
+    jewelry_id: str = Field(min_length=1)
     quantity: int = Field(gt=0)
 
 
 class OrderCreate(BaseModel):
-    customer_id: str
-    status: str
-    items: list[OrderItemCreate]
+    customer_id: str = Field(min_length=1)
+    status: str = Field(min_length=1)
+    items: list[OrderItemCreate] = Field(min_length=1)
