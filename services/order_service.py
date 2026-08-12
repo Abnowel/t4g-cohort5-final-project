@@ -37,7 +37,7 @@ class OrderService:
 
         new_order = Order(
             customer_id=order_data.get("customer_id"),
-            status=order_data.get("status"),
+            status="pending",
             total_amount=0
         )
 
