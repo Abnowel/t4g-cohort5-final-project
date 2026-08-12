@@ -1,13 +1,14 @@
 from fastapi import APIRouter, Body, status, HTTPException
 from services.customer_service import CustomerService
+from schemas.customer_schema import CustomerCreate ,CustomerUpdate
 
 router = APIRouter(prefix="/customers")
 
 customer_service = CustomerService()
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-def create_customer(body: dict = Body(...)):
-    new_customer = customer_service.create_customer(body)
+def create_customer(body: CustomerCreate):
+    new_customer = customer_service.create_customer(body.model_dump())
 
     return new_customer.to_dict()
 
@@ -35,8 +36,11 @@ def get_customer(customer_id: str):
     return customer.to_dict()
 
 @router.put("/{customer_id}")
-def update_customer(customer_id: str, body: dict = Body(...)):
-    updated_customer = customer_service.update_customer(customer_id,body)
+def update_customer(customer_id: str, body: CustomerUpdate):
+    updated_customer = customer_service.update_customer(
+        customer_id,
+        body.model_dump(exclude_unset=True)
+        )
 
     if updated_customer is None:
         raise HTTPException(

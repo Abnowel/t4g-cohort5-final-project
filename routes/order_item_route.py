@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Body, status, HTTPException
 from services.order_item_service import OrderItemService
+from schemas.order_item_schema import OrderItemCreate
 
 
 # Creating order item router with a common prefix
@@ -11,9 +12,11 @@ order_item_service = OrderItemService()
 
 # Creating a new order item
 @router.post("/", status_code=status.HTTP_201_CREATED)
-def create_order_item(body: dict = Body(...)):
+def create_order_item(body: OrderItemCreate):
 
-    new_order_item = order_item_service.create_order_item(body)
+    new_order_item = order_item_service.create_order_item(
+        body.model_dump()
+    )
 
     if new_order_item is None:
         raise HTTPException(

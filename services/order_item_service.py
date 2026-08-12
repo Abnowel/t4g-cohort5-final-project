@@ -12,6 +12,14 @@ class OrderItemService:
     # Create a new order item
     def create_order_item(self, order_item_data):
 
+        # Check if the order exists
+        order = self.session.query(Order).filter(
+            Order.id == order_item_data.get("order_id")
+        ).first()
+
+        if order is None:
+            return None
+
         jewelry = self.session.query(Jewelry).filter(
             Jewelry.id == order_item_data.get("jewelry_id")
         ).first()
