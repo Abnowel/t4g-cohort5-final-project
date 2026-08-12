@@ -2,11 +2,14 @@ from enum import Enum
 from pydantic import BaseModel, Field
 
 class OrderStatus(str, Enum):
-    pending = "pending"
-    completed = "completed"
+    PENDING = "pending"
+    COMPLETED = "completed"
 
 
-class OrderItemCreate(BaseModel):
+class OrderItemInOrder(BaseModel):
+    model_config ={
+        "extra":"forbid"
+    }
     jewelry_id: str = Field(min_length=1)
     quantity: int = Field(gt=0)
 
@@ -16,7 +19,7 @@ class OrderCreate(BaseModel):
         "extra": "forbid"
     }
     customer_id: str = Field(min_length=1)
-    items: list[OrderItemCreate] = Field(min_length=1)
+    items: list[OrderItemInOrder] = Field(min_length=1)
 
 class OrderUpdate(BaseModel):
     model_config = {
