@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Body, status, HTTPException
+from fastapi import APIRouter, status, HTTPException
 from services.order_item_service import OrderItemService
-from schemas.order_item_schema import OrderItemCreate
+from schemas.order_item_schema import OrderItemCreate,OrderItemUpdate
 
 
 # Creating order item router with a common prefix
@@ -58,12 +58,12 @@ def get_order_item_by_id(order_item_id: str):
 @router.put("/{order_item_id}")
 def update_order_item(
     order_item_id: str,
-    body: dict = Body(...)
+    body: OrderItemUpdate
 ):
 
     updated_order_item = order_item_service.update_order_item(
         order_item_id,
-        body
+        body.model_dump(exclude_unset=True)
     )
 
     if updated_order_item is None:

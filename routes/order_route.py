@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, status , HTTPException
+from fastapi import APIRouter, status , HTTPException
 from services.order_service import OrderService
 from schemas.order_schema import OrderCreate , OrderUpdate
 

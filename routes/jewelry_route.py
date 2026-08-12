@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Body, status, HTTPException
 from services.jewelry_service import JewelryService
+from schemas.jewelry_schema import JewelryCreate
 
 # Creating jewelry router with a common prefix
 router = APIRouter(prefix="/jewelry")
@@ -8,8 +9,8 @@ jewelry_service = JewelryService()
 
 # Creating a new jewelry item
 @router.post("/", status_code=status.HTTP_201_CREATED)
-def create_jewelry(body: dict = Body(...)):
-    new_jewelry = jewelry_service.create_jewelry(body)
+def create_jewelry(body: JewelryCreate):
+    new_jewelry = jewelry_service.create_jewelry(body.model_dump())
 
     return new_jewelry.to_dict()
 

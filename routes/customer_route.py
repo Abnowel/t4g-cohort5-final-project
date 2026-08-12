@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, status, HTTPException
+from fastapi import APIRouter,status, HTTPException
 from services.customer_service import CustomerService
 from schemas.customer_schema import CustomerCreate ,CustomerUpdate
 
