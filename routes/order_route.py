@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Body, status , HTTPException
 from services.order_service import OrderService
-from schemas.order_schema import OrderCreate
+from schemas.order_schema import OrderCreate , OrderUpdate
 
 
 # Creating order router with a common prefix
@@ -59,11 +59,14 @@ def get_order_by_id(order_id: str):
 
 # Update an existing order
 @router.put("/{order_id}")
-def update_order(order_id: str, body: dict = Body(...)):
+def update_order(
+    order_id: str, 
+    body: OrderUpdate
+    ):
 
     updated_order = order_service.update_order(
         order_id,
-        body
+        body.model_dump()
     )
 
     if updated_order is None:

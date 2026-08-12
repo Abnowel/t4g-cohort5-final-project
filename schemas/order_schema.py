@@ -17,3 +17,10 @@ class OrderCreate(BaseModel):
     }
     customer_id: str = Field(min_length=1)
     items: list[OrderItemCreate] = Field(min_length=1)
+
+class OrderUpdate(BaseModel):
+    model_config = {
+        "extra": "forbid"
+    }
+
+    status: OrderStatus

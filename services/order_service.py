@@ -91,18 +91,8 @@ class OrderService:
         if order is None:
             return None
 
-        order.customer_id = order_data.get(
-        "customer_id",
-        order.customer_id
-        )
-        order.status = order_data.get(
-        "status",
-        order.status
-        )
-        order.total_amount = order_data.get(
-        "total_amount",
-        order.total_amount
-        )
+        if order_data.get("status") is not None:
+            order.status = order_data.get("status")
         
 
         self.session.commit()
