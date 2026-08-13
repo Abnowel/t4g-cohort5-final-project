@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Body, status, HTTPException
+from fastapi import APIRouter, status, HTTPException
 from services.jewelry_service import JewelryService
-from schemas.jewelry_schema import JewelryCreate
+from schemas.jewelry_schema import JewelryCreate,JewelryUpdate
 
 # Creating jewelry router with a common prefix
 router = APIRouter(prefix="/jewelry")
@@ -42,10 +42,10 @@ def get_jewelry_by_id(jewelry_id: str):
 
 # Update a jewelry item
 @router.put("/{jewelry_id}",status_code=status.HTTP_200_OK)
-def update_jewelry(jewelry_id: str, body: dict = Body(...)):
+def update_jewelry(jewelry_id: str, body: JewelryUpdate):
     updated_jewelry = jewelry_service.update_jewelry(
         jewelry_id,
-        body
+        body.model_dump(exclude_unset=True)
     )
 
     if updated_jewelry is None:

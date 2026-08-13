@@ -22,7 +22,7 @@ class Jewelry(Base):
 
     def __str__(self):
         return (
-            f"Jewelry(id={self.id}, name={self.name}, price=GHC{self.price})"
+            f"Jewelry(id={self.id}, name={self.name}, price=GHS {self.price})"
             )
 
 
