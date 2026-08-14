@@ -12,7 +12,7 @@ class CustomerCreate(BaseModel):
         max_length=50,
         pattern=r"^[A-Za-z]+(?: [A-Za-z]+)*$"
         )
-    email: EmailStr
+    email: EmailStr = Field(max_length=100)
     phone_number: str = Field(
         min_length=10,
         max_length=10,

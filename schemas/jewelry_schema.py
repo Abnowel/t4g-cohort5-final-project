@@ -21,6 +21,13 @@ class JewelryCreate(BaseModel):
     price: Decimal = Field(gt=0)
     stock_quantity: int = Field(ge=0)
 
+    @field_validator("category", mode="before")
+    @classmethod
+    def clean_category(cls, value):
+        if isinstance(value, str):
+            return value.strip().lower()
+        return value
+
     @field_validator("name", "material")
     @classmethod
     def validate_text(cls, value):
@@ -58,6 +65,13 @@ class JewelryUpdate(BaseModel):
     default=None,
     ge=0
 )
+    @field_validator("category", mode="before")
+    @classmethod
+    def clean_category(cls, value):
+        if isinstance(value, str):
+            return value.strip().lower()
+        return value
+    
     @field_validator("name", "material")
     @classmethod
     def validate_text(cls, value):

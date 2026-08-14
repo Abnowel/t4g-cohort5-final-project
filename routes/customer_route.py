@@ -10,6 +10,18 @@ customer_service = CustomerService()
 def create_customer(body: CustomerCreate):
     new_customer = customer_service.create_customer(body.model_dump())
 
+    if new_customer == "phone_number_exists":
+        raise HTTPException(
+            status_code=409,
+            detail="Phone number already exists"
+        )
+
+    if new_customer == "email_exists":
+        raise HTTPException(
+            status_code=409,
+            detail="Email address already exists"
+        )
+
     return new_customer.to_dict()
 
 
@@ -58,6 +70,11 @@ def delete_customer(customer_id: str):
         raise HTTPException(
             status_code=404,
             detail="Customer not found"
+        )
+    if deleted_customer == "has_orders":
+        raise HTTPException(
+        status_code=409,
+        detail="Cannot delete customer because they have existing orders"
         )
 
     return {

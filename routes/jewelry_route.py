@@ -12,6 +12,12 @@ jewelry_service = JewelryService()
 def create_jewelry(body: JewelryCreate):
     new_jewelry = jewelry_service.create_jewelry(body.model_dump())
 
+    if new_jewelry == "name_exists":
+        raise HTTPException(
+            status_code=409,
+            detail="Jewelry name already exists"
+        )
+
     return new_jewelry.to_dict()
 
 # Get all jewelry items

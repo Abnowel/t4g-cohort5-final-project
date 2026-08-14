@@ -8,6 +8,14 @@ class JewelryService:
 
     # Creating a new jewelry item
     def create_jewelry(self, jewelry_data):
+        existing_name = self.session.query(Jewelry).filter(
+            Jewelry.name == jewelry_data.get("name")
+        ).first()
+
+        if existing_name is not None:
+            return "name_exists"
+
+
         new_jewelry = Jewelry(
         name=jewelry_data.get("name"),
         category=jewelry_data.get("category"),

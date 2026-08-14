@@ -11,7 +11,7 @@ class Jewelry(Base):
     __tablename__ = "jewelry"
 
     id = Column(String(60), primary_key=True, default=generate_uuid)
-    name = Column(String(100), nullable=False)
+    name = Column(String(100), nullable=False, unique=True)
     category = Column(String(50), nullable=False)
     material = Column(String(50), nullable=False)
     price = Column(Numeric(10, 2), nullable=False)

@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 class OrderStatus(str, Enum):
     PENDING = "pending"
     COMPLETED = "completed"
+    CANCELLED = "cancelled"
 
 
 class OrderItemInOrder(BaseModel):

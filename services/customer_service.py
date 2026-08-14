@@ -1,5 +1,6 @@
 from models.customer_model import Customer
 from utils.database_connection import db_session
+from sqlalchemy.exc import IntegrityError
 
 
 class CustomerService:
@@ -8,13 +9,27 @@ class CustomerService:
         self.session = session
 
     def create_customer(self, customer_data):
+        existing_phone = self.session.query(Customer).filter(
+            Customer.phone_number == customer_data.get("phone_number")
+        ).first()
+
+        if existing_phone is not None:
+            return "phone_number_exists"
+
+        existing_email = self.session.query(Customer).filter(
+            Customer.email == customer_data.get("email")
+        ).first()
+
+        if existing_email is not None:
+            return "email_exists"
+        
         customer = Customer(
-    first_name=customer_data.get("first_name"),
-    last_name=customer_data.get("last_name"),
-    phone_number=customer_data.get("phone_number"),
-    email=customer_data.get("email"),
-    address=customer_data.get("address")
-    )
+            first_name=customer_data.get("first_name"),
+            last_name=customer_data.get("last_name"),
+            phone_number=customer_data.get("phone_number"),
+            email=customer_data.get("email"),
+            address=customer_data.get("address")
+        )
         self.session.add(customer)
         self.session.commit()
 
@@ -50,7 +65,12 @@ class CustomerService:
         if customer is None:
             return None
 
-        self.session.delete(customer)
-        self.session.commit()
+        try:            
+            self.session.delete(customer)
+            self.session.commit()
+
+        except IntegrityError:
+            self.session.rollback()
+            return "has_orders"
 
         return customer

@@ -18,10 +18,16 @@ def create_order_item(body: OrderItemCreate):
         body.model_dump()
     )
 
-    if new_order_item is None:
+    if new_order_item == "order_not_found":
         raise HTTPException(
             status_code=404,
-            detail="Jewelry item not found"
+            detail="Order not found"
+        )
+
+    if new_order_item == "jewelry_not_found":
+        raise HTTPException(
+            status_code=404,
+            detail= "Jewelry item not found"
         )
 
     return new_order_item.to_dict()

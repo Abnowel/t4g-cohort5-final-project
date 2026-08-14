@@ -13,8 +13,8 @@ class Customer(Base):
     id = Column(String(60), primary_key=True, default=generate_uuid)
     first_name = Column(String(50), nullable=False)
     last_name = Column(String(50), nullable=False)
-    phone_number = Column(String(10), nullable=False)
-    email = Column(String(100), nullable=False)
+    phone_number = Column(String(10), nullable=False, unique=True)
+    email = Column(String(100), nullable=False, unique=True)
     address = Column(String(150), nullable=False)
 
     # Creating relationship with Order model

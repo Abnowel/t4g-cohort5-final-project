@@ -18,14 +18,14 @@ class OrderItemService:
         ).first()
 
         if order is None:
-            return None
+            return "order_not_found"
 
         jewelry = self.session.query(Jewelry).filter(
             Jewelry.id == order_item_data.get("jewelry_id")
         ).first()
 
         if jewelry is None:
-            return None
+            return "jewelry_not_found"
 
         new_order_item = OrderItem(
             order_id=order_item_data.get("order_id"),
