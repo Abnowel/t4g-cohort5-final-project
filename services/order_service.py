@@ -2,6 +2,7 @@ from models.order_model import Order
 from models.order_item_model import OrderItem
 from models.jewelry_model import Jewelry
 from models.customer_model import Customer
+from sqlalchemy.exc import IntegrityError
 from utils.database_connection import db_session
 
 
@@ -108,8 +109,13 @@ class OrderService:
         if order is None:
             return None
 
-        self.session.delete(order)
-        self.session.commit()
+        try:
+            self.session.delete(order)
+            self.session.commit()
+            
+        except IntegrityError:
+            self.session.rollback()
+            return "has_order_items"
 
         return order
 

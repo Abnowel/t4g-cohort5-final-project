@@ -89,6 +89,12 @@ def delete_order(order_id: str):
             detail="Order not found"
         )
 
+    if deleted_order == "has_order_items":
+        raise HTTPException(
+        status_code=409,
+        detail="Cannot delete order because it has existing order items"
+    )
+
     return {
         "message": "Order deleted successfully"
     }
