@@ -23,6 +23,12 @@ def create_order(body: OrderCreate):
             detail="Customer not found"
         )
 
+    if new_order == "insufficient_stock":
+        raise HTTPException(
+            status_code=409,
+            detail="Insufficient stock for one or more jewelry items"
+    )
+
     if new_order is None:
         raise HTTPException(
             status_code=404,

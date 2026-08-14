@@ -32,6 +32,9 @@ class OrderService:
             if jewelry is None:
                 return None
 
+            if item.get("quantity") > jewelry.stock_quantity:
+                return "insufficient_stock"
+
             jewelry_items.append(
                 (item,jewelry)
             )
@@ -50,6 +53,8 @@ class OrderService:
         # Creating order items for the new order
         for item ,jewelry in jewelry_items:
 
+            quantity = item.get("quantity")
+
             order_item = OrderItem(
                 order_id = new_order.id,
                 jewelry_id = jewelry.id,
@@ -59,7 +64,8 @@ class OrderService:
 
             self.session.add(order_item)
 
-            total += jewelry.price * item.get("quantity")
+            total += jewelry.price * quantity
+            jewelry.stock_quantity -= quantity
 
         # Setting the calculated order total
         new_order.total_amount = total
@@ -112,7 +118,7 @@ class OrderService:
         try:
             self.session.delete(order)
             self.session.commit()
-            
+
         except IntegrityError:
             self.session.rollback()
             return "has_order_items"
