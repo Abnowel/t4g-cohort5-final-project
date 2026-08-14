@@ -101,7 +101,10 @@ class OrderService:
         new_status = order_data.get("status")
 
         if new_status is not None:
-            if order.status == "pending" and new_status == "cancelled":
+            if order.status != "pending":
+                return "invalid_status_transition"
+
+        if new_status == "cancelled":
                 for item in order.items:
                     item.jewelry.stock_quantity += item.quantity
 

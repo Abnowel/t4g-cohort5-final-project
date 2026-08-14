@@ -81,6 +81,13 @@ def update_order(
             detail="Order not found"
         )
 
+    if updated_order == "invalid_status_transition":
+        raise HTTPException(
+            status_code=409,
+            detail="Order status cannot be changed because the order is already completed or cancelled"
+    )
+
+
     return updated_order.to_dict()
 
 # Delete an existing order
