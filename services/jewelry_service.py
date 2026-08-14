@@ -1,5 +1,6 @@
 from models.jewelry_model import Jewelry
 from utils.database_connection import db_session
+from sqlalchemy.exc import IntegrityError
 
 
 class JewelryService:
@@ -72,7 +73,12 @@ class JewelryService:
         if jewelry is None:
             return None
 
-        self.session.delete(jewelry)
-        self.session.commit()
+        try:
+            self.session.delete(jewelry)
+            self.session.commit()
+
+        except IntegrityError:
+            self.session.rollback()
+            return "has_order_items"
 
         return jewelry

@@ -72,7 +72,12 @@ def delete_jewelry(jewelry_id: str):
             status_code=404,
             detail="Jewelry item not found"
         )
-
+    if deleted_jewelry == "has_order_items":
+        raise HTTPException(
+        status_code=409,
+        detail="Cannot delete jewelry because it is associated with existing order items"
+    )
+    
     return {
         "message": "Jewelry item deleted successfully"
     }
