@@ -98,8 +98,14 @@ class OrderService:
         if order is None:
             return None
 
-        if order_data.get("status") is not None:
-            order.status = order_data.get("status")
+        new_status = order_data.get("status")
+
+        if new_status is not None:
+            if order.status == "pending" and new_status == "cancelled":
+                for item in order.items:
+                    item.jewelry.stock_quantity += item.quantity
+
+        order.status = new_status
         
 
         self.session.commit()
