@@ -30,6 +30,12 @@ def create_order_item(body: OrderItemCreate):
             detail= "Jewelry item not found"
         )
 
+    if new_order_item == "insufficient_stock":
+        raise HTTPException(
+            status_code=409,
+            detail="Insufficient stock"
+        )
+
     return new_order_item.to_dict()
 
 # Get all order items
@@ -72,6 +78,12 @@ def update_order_item(
         body.model_dump(exclude_unset=True)
     )
 
+    if updated_order_item == "insufficient_stock":
+        raise HTTPException(
+            status_code=409,
+            detail="Insufficient stock"
+        )
+    
     if updated_order_item is None:
         raise HTTPException(
             status_code=404,
