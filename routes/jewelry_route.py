@@ -60,6 +60,12 @@ def update_jewelry(jewelry_id: str, body: JewelryUpdate):
             detail="Jewelry item not found"
         )
 
+    if updated_jewelry == "name_exists":
+        raise HTTPException(
+            status_code=409,
+            detail="Jewelry name already exists"
+        )
+
     return updated_jewelry.to_dict()
 
 # Delete a jewelry item

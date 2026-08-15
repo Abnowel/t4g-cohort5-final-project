@@ -51,6 +51,16 @@ class JewelryService:
         if jewelry is None:
             return None
 
+        # Check if the new name already belongs to another jewelry item
+        if jewelry_data.get("name") is not None:
+            existing_name = self.session.query(Jewelry).filter(
+                Jewelry.name == jewelry_data.get("name"),
+                Jewelry.id != jewelry_id
+            ).first()
+
+            if existing_name is not None:
+                return "name_exists"
+
         jewelry.name = jewelry_data.get("name", jewelry.name)
         jewelry.category = jewelry_data.get("category", jewelry.category)
         jewelry.material = jewelry_data.get("material", jewelry.material)
