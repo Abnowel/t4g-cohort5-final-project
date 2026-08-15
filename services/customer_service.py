@@ -49,6 +49,26 @@ class CustomerService:
         if customer is None:
             return None
 
+        # Check if the new phone number belongs to another customer
+        if customer_data.get("phone_number") is not None:
+            existing_phone = self.session.query(Customer).filter(
+                Customer.phone_number == customer_data.get("phone_number"),
+                Customer.id != customer_id
+            ).first()
+
+            if existing_phone is not None:
+                return "phone_number_exists"
+
+        # Check if the new email belongs to another customer
+        if customer_data.get("email") is not None:
+            existing_email = self.session.query(Customer).filter(
+                Customer.email == customer_data.get("email"),
+                Customer.id != customer_id
+            ).first()
+
+            if existing_email is not None:
+                return "email_exists"
+
         customer.first_name = customer_data.get("first_name", customer.first_name)
         customer.last_name = customer_data.get("last_name", customer.last_name)
         customer.phone_number = customer_data.get("phone_number", customer.phone_number)

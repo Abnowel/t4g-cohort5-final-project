@@ -59,6 +59,17 @@ def update_customer(customer_id: str, body: CustomerUpdate):
             status_code=404,
             detail="Customer not found"
         )
+    if updated_customer == "phone_number_exists":
+        raise HTTPException(
+            status_code=409,
+            detail="Phone number already exists"
+        )
+
+    if updated_customer == "email_exists":
+        raise HTTPException(
+            status_code=409,
+            detail="Email address already exists"
+        )
 
     return updated_customer.to_dict()
 
