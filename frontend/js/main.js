@@ -524,6 +524,51 @@ async function editJewelry(jewelryId) {
     }
 }
 
+async function editOrder(orderId) {
+
+    try {
+
+        const response = await fetch(
+            `/orders/${orderId}`
+        );
+
+        const order = await response.json();
+
+        if (!response.ok) {
+
+            alert(
+                order.detail ||
+                "Failed to get order"
+            );
+
+            return;
+        }
+
+        document.getElementById(
+            "order-id"
+        ).value = order.id;
+
+        document.getElementById(
+            "order-status"
+        ).value = order.status;
+
+        document.getElementById(
+            "order-form"
+        ).style.display = "block";
+
+    } catch (error) {
+
+        console.error(
+            "Error getting order:",
+            error
+        );
+
+        alert(
+            "Something went wrong while getting the order."
+        );
+    }
+}
+
 async function deleteJewelry(jewelryId) {
 
     const confirmed = confirm(
@@ -597,3 +642,110 @@ document.addEventListener("click", function (event) {
     }
 
 });
+document.addEventListener("click", function (event) {
+
+    if (
+        event.target.classList.contains(
+            "order-edit-button"
+        )
+    ) {
+
+        const orderId =
+            event.target.dataset.id;
+
+        editOrder(orderId);
+    }
+
+});
+
+document.getElementById("order-form").addEventListener(
+    "submit",
+    async function (event) {
+
+        event.preventDefault();
+
+        const orderId = document.getElementById(
+            "order-id"
+        ).value;
+
+        const status = document.getElementById(
+            "order-status"
+        ).value;
+
+        try {
+
+            const response = await fetch(
+                `/orders/${orderId}`,
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        status: status
+                    })
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok) {
+
+                alert(
+                    result.detail ||
+                    "Failed to update order"
+                );
+
+                return;
+            }
+
+            alert(
+                "Order updated successfully"
+            );
+
+            document.getElementById(
+                "order-form"
+            ).reset();
+
+            document.getElementById(
+                "order-id"
+            ).value = "";
+
+            document.getElementById(
+                "order-form"
+            ).style.display = "none";
+
+            loadDashboard();
+
+        } catch (error) {
+
+            console.error(
+                "Error updating order:",
+                error
+            );
+
+            alert(
+                "Something went wrong while updating the order."
+            );
+        }
+    }
+);
+document.getElementById("cancel-order-form").addEventListener(
+    "click",
+    function () {
+
+        const orderForm = document.getElementById(
+            "order-form"
+        );
+
+        orderForm.reset();
+
+        document.getElementById(
+            "order-id"
+        ).value = "";
+
+        orderForm.style.display = "none";
+    }
+);

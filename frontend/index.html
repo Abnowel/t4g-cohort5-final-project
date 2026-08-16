@@ -254,6 +254,38 @@
                 <h2>Orders</h2>
             </div>
 
+            <form id="order-form" class="customer-form" style="display: none;">
+
+                <input type="hidden" id="order-id">
+
+                <div class="form-group">
+                    <label for="order-status">Status</label>
+
+                    <select id="order-status" required>
+                        <option value="">Select status</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+
+                    <button type="submit" id="order-submit-button">
+                        Update Order
+                    </button>
+
+                    <button
+                        type="button"
+                        id="cancel-order-form"
+                    >
+                        Cancel
+                    </button>
+
+                </div>
+
+            </form>
+
             <div class="table-container">
 
                 <table>
