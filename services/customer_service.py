@@ -44,36 +44,56 @@ class CustomerService:
 
 
     def update_customer(self, customer_id, customer_data):
-        customer = self.session.query(Customer).filter(Customer.id == customer_id).first()
+        customer = self.session.query(Customer).filter(
+            Customer.id == customer_id
+        ).first()
 
         if customer is None:
             return None
 
-        # Check if the new phone number belongs to another customer
-        if customer_data.get("phone_number") is not None:
-            existing_phone = self.session.query(Customer).filter(
-                Customer.phone_number == customer_data.get("phone_number"),
-                Customer.id != customer_id
-            ).first()
+        new_phone = customer_data.get(
+            "phone_number",
+            customer.phone_number
+        )
 
-            if existing_phone is not None:
-                return "phone_number_exists"
+        new_email = customer_data.get(
+            "email",
+            customer.email
+        )
 
-        # Check if the new email belongs to another customer
-        if customer_data.get("email") is not None:
-            existing_email = self.session.query(Customer).filter(
-                Customer.email == customer_data.get("email"),
-                Customer.id != customer_id
-            ).first()
+        existing_phone = self.session.query(Customer).filter(
+            Customer.phone_number == new_phone,
+            Customer.id != customer_id
+        ).first()
 
-            if existing_email is not None:
-                return "email_exists"
+        if existing_phone is not None:
+            return "phone_number_exists"
 
-        customer.first_name = customer_data.get("first_name", customer.first_name)
-        customer.last_name = customer_data.get("last_name", customer.last_name)
-        customer.phone_number = customer_data.get("phone_number", customer.phone_number)
-        customer.email = customer_data.get("email", customer.email)
-        customer.address = customer_data.get("address", customer.address)
+        existing_email = self.session.query(Customer).filter(
+            Customer.email == new_email,
+            Customer.id != customer_id
+        ).first()
+
+        if existing_email is not None:
+            return "email_exists"
+
+        customer.first_name = customer_data.get(
+            "first_name",
+            customer.first_name
+        )
+
+        customer.last_name = customer_data.get(
+            "last_name",
+            customer.last_name
+        )
+
+        customer.phone_number = new_phone
+        customer.email = new_email
+
+        customer.address = customer_data.get(
+            "address",
+            customer.address
+        )
 
         self.session.commit()
 
