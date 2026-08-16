@@ -1,0 +1,215 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f6fa;
+    color: #222;
+}
+
+header {
+    background-color: #1f2937;
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+header h1 {
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #d1d5db;
+}
+
+main {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.card h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #4b5563;
+}
+
+.card p {
+    font-size: 32px;
+    font-weight: bold;
+    color: #111827;
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
+.content-section {
+    background-color: white;
+    margin-top: 30px;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.section-header {
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    color: #1f2937;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+th {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+td {
+    color: #4b5563;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-header button {
+    background-color: #1f2937;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.section-header button:hover {
+    background-color: #374151;
+}
+
+.customer-form {
+    display: none;
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: #f9fafb;
+    border-radius: 8px;
+}
+
+.customer-form.show {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: #374151;
+}
+
+.form-group input {
+    padding: 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 10px;
+}
+
+.form-actions button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.form-actions button[type="submit"] {
+    background-color: #1f2937;
+    color: white;
+}
+
+#cancel-customer-form {
+    background-color: #e5e7eb;
+    color: #374151;
+}
+
+@media (max-width: 768px) {
+    .customer-form.show {
+        grid-template-columns: 1fr;
+    }
+}
+
+.action-button {
+    border: none;
+    padding: 7px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.edit-button,
+.jewelry-edit-button {
+    background-color: #e5e7eb;
+    color: #1f2937;
+}
+
+.edit-button:hover,
+.jewelry-edit-button:hover {
+    background-color: #d1d5db;
+}
+
+.delete-button,
+.jewelry-delete-button {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.delete-button:hover,
+.jewelry-delete-button:hover {
+    background-color: #fecaca;
+}
