@@ -569,6 +569,54 @@ async function editOrder(orderId) {
     }
 }
 
+async function deleteOrder(orderId) {
+
+    const confirmed = confirm(
+        "Are you sure you want to delete this order?"
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            `/orders/${orderId}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+
+            alert(
+                result.detail ||
+                "Failed to delete order"
+            );
+
+            return;
+        }
+
+        alert("Order deleted successfully");
+
+        loadDashboard();
+
+    } catch (error) {
+
+        console.error(
+            "Error deleting order:",
+            error
+        );
+
+        alert(
+            "Something went wrong while deleting the order."
+        );
+    }
+}
+
 async function deleteJewelry(jewelryId) {
 
     const confirmed = confirm(
@@ -654,6 +702,22 @@ document.addEventListener("click", function (event) {
             event.target.dataset.id;
 
         editOrder(orderId);
+    }
+
+});
+
+document.addEventListener("click", function (event) {
+
+    if (
+        event.target.classList.contains(
+            "order-delete-button"
+        )
+    ) {
+
+        const orderId =
+            event.target.dataset.id;
+
+        deleteOrder(orderId);
     }
 
 });
