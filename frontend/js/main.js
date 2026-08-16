@@ -323,3 +323,233 @@ document.addEventListener("click", async (event) => {
         alert("Something went wrong while deleting the customer.");
     }
 });
+
+function showJewelryForm() {
+    const form = document.getElementById("jewelry-form");
+
+    if (form) {
+        form.style.display = "block";
+    }
+}
+
+function hideJewelryForm() {
+    const form = document.getElementById("jewelry-form");
+
+    if (form) {
+        form.reset();
+        form.style.display = "none";
+    }
+}
+
+
+document.getElementById("jewelry-form").addEventListener(
+    "submit",
+    async function (event) {
+
+        event.preventDefault();
+
+        const jewelryId = document.getElementById(
+            "jewelry-id"
+        ).value;
+
+        const jewelryData = {
+            name: document.getElementById(
+                "jewelry-name"
+            ).value.trim(),
+
+            category: document.getElementById(
+                "jewelry-category"
+            ).value,
+
+            material: document.getElementById(
+                "jewelry-material"
+            ).value.trim(),
+
+            price: parseFloat(
+                document.getElementById(
+                    "jewelry-price"
+                ).value
+            ),
+
+            stock_quantity: parseInt(
+                document.getElementById(
+                    "jewelry-stock"
+                ).value
+            )
+        };
+
+        const url = jewelryId
+            ? `/jewelry/${jewelryId}`
+            : "/jewelry/";
+
+        const method = jewelryId
+            ? "PUT"
+            : "POST";
+
+        try {
+
+            const response = await fetch(
+                url,
+                {
+                    method: method,
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify(jewelryData)
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok) {
+
+                alert(
+                    result.detail ||
+                    "Failed to save jewelry item"
+                );
+
+                return;
+            }
+
+            alert(
+                jewelryId
+                    ? "Jewelry item updated successfully"
+                    : "Jewelry item created successfully"
+            );
+
+            document.getElementById(
+                "jewelry-form"
+            ).reset();
+
+            document.getElementById(
+                "jewelry-id"
+            ).value = "";
+
+            document.getElementById(
+                "jewelry-submit-button"
+            ).textContent = "Save Jewelry";
+
+            hideJewelryForm();
+
+            loadDashboard();
+
+        } catch (error) {
+
+            console.error(
+                "Error saving jewelry:",
+                error
+            );
+
+            alert(
+                "Something went wrong while saving the jewelry item."
+            );
+        }
+    }
+);
+
+async function editJewelry(jewelryId) {
+    try {
+        const response = await fetch(`/jewelry/${jewelryId}`);
+
+        const jewelry = await response.json();
+
+        if (!response.ok) {
+            alert(jewelry.detail || "Failed to get jewelry item");
+            return;
+        }
+
+        document.getElementById("jewelry-id").value = jewelry.id;
+        document.getElementById("jewelry-name").value = jewelry.name;
+        document.getElementById("jewelry-category").value = jewelry.category;
+        document.getElementById("jewelry-material").value = jewelry.material;
+        document.getElementById("jewelry-price").value =
+            parseFloat(jewelry.price.toString().replace("GHS", "").trim());
+            
+        document.getElementById("jewelry-stock").value = jewelry.stock_quantity;
+
+        document.getElementById("jewelry-submit-button").textContent =
+            "Update Jewelry";
+
+        showJewelryForm();
+
+    } catch (error) {
+        console.error("Error getting jewelry item:", error);
+        alert("Something went wrong while getting the jewelry item.");
+    }
+}
+
+async function deleteJewelry(jewelryId) {
+
+    const confirmed = confirm(
+        "Are you sure you want to delete this jewelry item?"
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            `/jewelry/${jewelryId}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+
+            alert(
+                result.detail ||
+                "Failed to delete jewelry item"
+            );
+
+            return;
+        }
+
+        alert("Jewelry item deleted successfully");
+
+        loadDashboard();
+
+    } catch (error) {
+
+        console.error(
+            "Error deleting jewelry:",
+            error
+        );
+
+        alert(
+            "Something went wrong while deleting the jewelry item."
+        );
+    }
+}
+
+document.addEventListener("click", function (event) {
+
+    if (event.target.classList.contains("jewelry-edit-button")) {
+
+        const jewelryId = event.target.dataset.id;
+
+        editJewelry(jewelryId);
+    }
+
+});
+
+document.addEventListener("click", function (event) {
+
+    if (
+        event.target.classList.contains(
+            "jewelry-delete-button"
+        )
+    ) {
+
+        const jewelryId = event.target.dataset.id;
+
+        deleteJewelry(jewelryId);
+    }
+
+});

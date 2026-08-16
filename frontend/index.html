@@ -6,7 +6,7 @@
 
     <title>Jewelry Order & Inventory Management System</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/frontend/css/style.css">
 </head>
 
 <body>
@@ -144,11 +144,16 @@
             <div class="section-header">
                 <h2>Jewelry Items</h2>
 
-                <button id="show-jewelry-form">
+                <button
+                    type ="button" 
+                    id="show-jewelry-form"
+                    onclick="showJewelryForm()"
+                >
                     + Add Jewelry
                 </button>
             </div>
-            <form id="jewelry-form" class="customer-form">
+
+            <form id="jewelry-form">
 
                 <input type="hidden" id="jewelry-id">
 
@@ -212,6 +217,7 @@
                     <button
                         type="button"
                         id="cancel-jewelry-form"
+                        onclick="hideJewelryForm()"
                     >
                         Cancel
                     </button>
@@ -245,7 +251,7 @@
 
     </main>
 
-    <script src="script.js"></script>
+    <script src="/frontend/js/main.js"></script>
 
 </body>
 </html>

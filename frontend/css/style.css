@@ -213,3 +213,7 @@ td {
 .jewelry-delete-button:hover {
     background-color: #fecaca;
 }
+
+#jewelry-form {
+    display: none;
+}
