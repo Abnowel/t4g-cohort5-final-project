@@ -252,27 +252,106 @@
 
             <div class="section-header">
                 <h2>Orders</h2>
+
+                <button id="show-order-form">
+                    + Add Order
+                </button>
             </div>
 
-            <form id="order-form" class="customer-form" style="display: none;">
+            <form
+                id="order-form"
+                class="customer-form"
+                style="display: none;"
+            >
 
-                <input type="hidden" id="order-id">
+                <input
+                    type="hidden"
+                    id="order-id"
+                >
 
                 <div class="form-group">
-                    <label for="order-status">Status</label>
 
-                    <select id="order-status" required>
-                        <option value="">Select status</option>
-                        <option value="pending">Pending</option>
-                        <option value="completed">Completed</option>
-                        <option value="cancelled">Cancelled</option>
+                    <label for="order-customer">
+                        Customer
+                    </label>
+
+                    <select
+                        id="order-customer"
+                        required
+                    >
+                        <option value="">
+                            Select customer
+                        </option>
                     </select>
+
+                </div>
+
+            <div class="form-group">
+
+                    <label for="order-jewelry">
+                        Jewelry Item
+                    </label>
+
+                    <select
+                        id="order-jewelry"
+                        required
+                    >
+                        <option value="">
+                            Select jewelry item
+                        </option>
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="order-quantity">
+                        Quantity
+                    </label>
+
+                    <input
+                        type="number"
+                        id="order-quantity"
+                        min="1"
+                        required
+                    >
+
+                </div>
+                <div
+                    class="form-group"
+                    id="order-status-group"
+                    style="display: none;"
+                >
+
+                    <label for="order-status">
+                        Status
+                    </label>
+
+                    <select id="order-status">
+
+                        <option value="pending">
+                            Pending
+                        </option>
+
+                        <option value="completed">
+                            Completed
+                        </option>
+
+                        <option value="cancelled">
+                            Cancelled
+                        </option>
+
+                    </select>
+
                 </div>
 
                 <div class="form-actions">
 
-                    <button type="submit" id="order-submit-button">
-                        Update Order
+                    <button
+                        type="submit"
+                        id="order-submit-button"
+                    >
+                        Create Order
                     </button>
 
                     <button
@@ -301,7 +380,7 @@
                     </thead>
 
                     <tbody id="order-table-body">
-                        <!-- Orders will be added here -->
+                <!-- Orders will be added here -->
                     </tbody>
 
                 </table>

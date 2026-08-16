@@ -106,6 +106,52 @@ async function loadDashboard() {
             jewelryTableBody.appendChild(row);
         });
         
+        const orderCustomerSelect = document.getElementById(
+            "order-customer"
+            );
+
+        const orderJewelrySelect = document.getElementById(
+    "order-jewelry"
+        );
+
+        orderCustomerSelect.innerHTML = `
+            <option value="">
+                Select customer
+            </option>
+        `;
+
+        customers.forEach(customer => {
+
+            const option = document.createElement("option");
+
+            option.value = customer.id;
+
+            option.textContent =
+                `${customer.first_name} ${customer.last_name}`;
+
+            orderCustomerSelect.appendChild(option);
+        });
+
+
+            orderJewelrySelect.innerHTML = `
+            <option value="">
+                Select jewelry item
+            </option>
+        `;
+
+        jewelry.forEach(item => {
+
+            const option = document.createElement("option");
+
+            option.value = item.id;
+
+            option.textContent =
+        `${item.name} - GHS ${item.price} (Stock: ${item.stock_quantity})`;
+
+            orderJewelrySelect.appendChild(option);
+        });
+
+
         const orderTableBody = document.getElementById(
             "order-table-body"
         );
@@ -553,6 +599,44 @@ async function editOrder(orderId) {
         ).value = order.status;
 
         document.getElementById(
+            "order-status-group"
+        ).style.display = "block";
+
+        const customerField =
+            document.getElementById(
+                "order-customer"
+            );
+
+        const jewelryField =
+            document.getElementById(
+                "order-jewelry"
+            );
+
+        const quantityField =
+            document.getElementById(
+                "order-quantity"
+            );
+
+        customerField.parentElement.style.display =
+            "none";
+
+        jewelryField.parentElement.style.display =
+            "none";
+
+        quantityField.parentElement.style.display =
+            "none";
+
+        customerField.required = false;
+
+        jewelryField.required = false;
+
+        quantityField.required = false;
+
+        document.getElementById(
+            "order-submit-button"
+        ).textContent = "Update Order";
+
+        document.getElementById(
             "order-form"
         ).style.display = "block";
 
@@ -568,7 +652,6 @@ async function editOrder(orderId) {
         );
     }
 }
-
 async function deleteOrder(orderId) {
 
     const confirmed = confirm(
@@ -722,80 +805,7 @@ document.addEventListener("click", function (event) {
 
 });
 
-document.getElementById("order-form").addEventListener(
-    "submit",
-    async function (event) {
 
-        event.preventDefault();
-
-        const orderId = document.getElementById(
-            "order-id"
-        ).value;
-
-        const status = document.getElementById(
-            "order-status"
-        ).value;
-
-        try {
-
-            const response = await fetch(
-                `/orders/${orderId}`,
-                {
-                    method: "PUT",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        status: status
-                    })
-                }
-            );
-
-            const result = await response.json();
-
-            if (!response.ok) {
-
-                alert(
-                    result.detail ||
-                    "Failed to update order"
-                );
-
-                return;
-            }
-
-            alert(
-                "Order updated successfully"
-            );
-
-            document.getElementById(
-                "order-form"
-            ).reset();
-
-            document.getElementById(
-                "order-id"
-            ).value = "";
-
-            document.getElementById(
-                "order-form"
-            ).style.display = "none";
-
-            loadDashboard();
-
-        } catch (error) {
-
-            console.error(
-                "Error updating order:",
-                error
-            );
-
-            alert(
-                "Something went wrong while updating the order."
-            );
-        }
-    }
-);
 document.getElementById("cancel-order-form").addEventListener(
     "click",
     function () {
@@ -811,5 +821,246 @@ document.getElementById("cancel-order-form").addEventListener(
         ).value = "";
 
         orderForm.style.display = "none";
+    }
+);
+
+function showOrderForm() {
+
+    const form = document.getElementById(
+        "order-form"
+    );
+
+    if (form) {
+        form.style.display = "block";
+    }
+}
+
+
+function hideOrderForm() {
+
+    const form = document.getElementById(
+        "order-form"
+    );
+
+    if (!form) {
+        return;
+    }
+
+    form.reset();
+
+    document.getElementById(
+        "order-id"
+    ).value = "";
+
+    document.getElementById(
+        "order-status-group"
+    ).style.display = "none";
+
+    const customerField =
+        document.getElementById(
+            "order-customer"
+        );
+
+    const jewelryField =
+        document.getElementById(
+            "order-jewelry"
+        );
+
+    const quantityField =
+        document.getElementById(
+            "order-quantity"
+        );
+
+    customerField.parentElement.style.display =
+        "block";
+
+    jewelryField.parentElement.style.display =
+        "block";
+
+    quantityField.parentElement.style.display =
+        "block";
+
+    customerField.required = true;
+
+    jewelryField.required = true;
+
+    quantityField.required = true;
+
+    document.getElementById(
+        "order-submit-button"
+    ).textContent = "Create Order";
+
+    form.style.display = "none";
+}
+
+document.getElementById(
+    "show-order-form"
+).addEventListener(
+    "click",
+    function () {
+
+        showOrderForm();
+
+    }
+);
+
+
+document.getElementById(
+    "cancel-order-form"
+).addEventListener(
+    "click",
+    function () {
+
+        hideOrderForm();
+
+    }
+);
+
+document.getElementById("order-form").addEventListener(
+    "submit",
+    async function (event) {
+
+        event.preventDefault();
+
+        const orderId = document.getElementById(
+            "order-id"
+        ).value;
+
+        try {
+
+            // UPDATE EXISTING ORDER
+            if (orderId) {
+
+                const status = document.getElementById(
+                    "order-status"
+                ).value;
+
+                const response = await fetch(
+                    `/orders/${orderId}`,
+                    {
+                        method: "PUT",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            status: status
+                        })
+                    }
+                );
+
+                const result = await response.json();
+
+                if (!response.ok) {
+
+                    alert(
+                        result.detail ||
+                        "Failed to update order"
+                    );
+
+                    return;
+                }
+
+                alert(
+                    "Order updated successfully"
+                );
+
+            }
+
+            // CREATE NEW ORDER
+            else {
+
+                const customerId = document.getElementById(
+                    "order-customer"
+                ).value;
+
+                const jewelryId = document.getElementById(
+                    "order-jewelry"
+                ).value;
+
+                const quantity = parseInt(
+                    document.getElementById(
+                        "order-quantity"
+                    ).value
+                );
+
+                const orderData = {
+
+                    customer_id: customerId,
+
+                    items: [
+                        {
+                            jewelry_id: jewelryId,
+                            quantity: quantity
+                        }
+                    ]
+                };
+
+                const response = await fetch(
+                    "/orders/",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(orderData)
+                    }
+                );
+
+                const result = await response.json();
+
+                if (!response.ok) {
+
+                    alert(
+                        result.detail ||
+                        "Failed to create order"
+                    );
+
+                    return;
+                }
+
+                alert(
+                    "Order created successfully"
+                );
+            }
+
+            hideOrderForm();
+
+            document.getElementById(
+                "order-status-group"
+            ).style.display = "none";
+
+            document.getElementById(
+                "order-customer"
+            ).parentElement.style.display = "block";
+
+            document.getElementById(
+                "order-jewelry"
+            ).parentElement.style.display = "block";
+
+            document.getElementById(
+                "order-quantity"
+            ).parentElement.style.display = "block";
+
+            document.getElementById(
+                "order-submit-button"
+            ).textContent = "Create Order";
+
+            loadDashboard();
+
+        } catch (error) {
+
+            console.error(
+                "Error saving order:",
+                error
+            );
+
+            alert(
+                "Something went wrong while saving the order."
+            );
+        }
     }
 );
