@@ -117,20 +117,32 @@ class OrderService:
 
     # Delete an existing order
     def delete_order(self, order_id):
+
         order = self.session.query(Order).filter(
-        Order.id == order_id
+            Order.id == order_id
         ).first()
 
         if order is None:
             return None
 
-        try:
-            self.session.delete(order)
-            self.session.commit()
+        order_items = self.session.query(OrderItem).filter(
+            OrderItem.order_id == order_id
+        ).all()
 
-        except IntegrityError:
-            self.session.rollback()
-            return "has_order_items"
+        for order_item in order_items:
+
+            jewelry = self.session.query(Jewelry).filter(
+                Jewelry.id == order_item.jewelry_id
+            ).first()
+
+            if jewelry is not None:
+                jewelry.stock_quantity += order_item.quantity
+
+            self.session.delete(order_item)
+
+        self.session.delete(order)
+
+        self.session.commit()
 
         return order
 
