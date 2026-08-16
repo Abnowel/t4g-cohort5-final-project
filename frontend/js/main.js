@@ -105,6 +105,50 @@ async function loadDashboard() {
 
             jewelryTableBody.appendChild(row);
         });
+        
+        const orderTableBody = document.getElementById(
+            "order-table-body"
+        );
+
+        orderTableBody.innerHTML = "";
+
+        orders.forEach(order => {
+
+            const customer = customers.find(
+                customer => customer.id === order.customer_id
+            );
+
+            const customerName = customer
+                ? `${customer.first_name} ${customer.last_name}`
+                : "Unknown Customer";
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${customerName}</td>
+                <td>${order.order_date}</td>
+                <td>${order.status}</td>
+                <td>${order.total_amount}</td>
+
+                <td>
+                    <button
+                        class="action-button order-edit-button"
+                        data-id="${order.id}"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="action-button order-delete-button"
+                        data-id="${order.id}"
+                    >
+                        Delete
+                    </button>
+                </td>
+            `;
+
+            orderTableBody.appendChild(row);
+        });
 
     } catch (error) {
         console.error("Error loading dashboard:", error);
